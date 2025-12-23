@@ -30,7 +30,7 @@ public class Game {
     private boolean isFree = false;
 
     @Column(nullable = false, updatable = false)
-    private Instant createdAt = Instant.now();
+    private Instant createdAt;
 
     public Long getId() {
         return id;
@@ -78,6 +78,13 @@ public class Game {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    @PrePersist
+    void onCreate() {
+        if (createdAt == null) {
+            createdAt = Instant.now();
+        }
     }
 }
 

@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private Role role = Role.ROLE_USER;
 
     @Column(nullable = false, updatable = false)
-    private Instant createdAt = Instant.now();
+    private Instant createdAt;
 
     public Long getId() {
         return id;
@@ -82,6 +82,16 @@ public class User implements UserDetails {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    @PrePersist
+    void onCreate() {
+        if (createdAt == null) {
+            createdAt = Instant.now();
+        }
+        if (role == null) {
+            role = Role.ROLE_USER;
+        }
     }
 
     @Override
